@@ -37,6 +37,7 @@
 .table__column {
   border: 1px solid black;
   height: 140px;
+  width: 60px;
 }
 
 .table__buttons-zone {
