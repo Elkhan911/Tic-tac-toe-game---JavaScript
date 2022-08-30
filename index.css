@@ -1,0 +1,53 @@
+.content {
+  border: 1px solid black;
+  width: 1200px;
+  margin: 50px auto 0;
+  padding: 50px 0;
+}
+
+.content__header {
+  border: 1px solid black;
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  font-size: 40px;
+  padding-bottom: 30px;
+}
+
+.table {
+  border: 1px solid blue;
+  margin: 50px auto 50px;
+  width: 50%;
+  font-size: 70px;
+  text-align: center;
+}
+
+.table__text {
+  border: 1px solid black;
+  width: 50%;
+  text-align: center;
+  margin: 10px auto;
+  font-size: 25px;
+}
+
+.table__row {
+  border: 1px solid red;
+}
+
+.table__column {
+  border: 1px solid black;
+  height: 140px;
+}
+
+.table__buttons-zone {
+  border: 1px black solid;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+.table__button {
+  width: 200px;
+  height: 70px;
+  border-radius: 20px;
+}
