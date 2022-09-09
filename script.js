@@ -1,25 +1,41 @@
-let columnsAll = document.querySelectorAll(".table__column");
+const columnsAll = document.querySelectorAll(".table__column");
+const playerNumber = document.querySelector("#_playerNumber");
+const playerMove = document.querySelector("#_playerMove");
 
-let playerTurn = true;
+// boolen переменная для определения хода
+let firstPlayerTurn = true;
 
+// массивы с ходами игроков
 let firstPlayerMoves = [];
 let secondPlayerMoves = [];
+
+function isItEmpty(value) {
+  if (value == "") {
+    return true;
+  } else return false;
+}
 
 function crossOrToe() {
   for (let column of columnsAll) {
     column.addEventListener("click", function () {
-      if (playerTurn == true) {
-        this.textContent = "X";
-        playerTurn = false;
-        let a = column.getAttribute("data-value");
-        firstPlayerMoves.push(a);
-        console.log(firstPlayerMoves);
-      } else {
-        this.textContent = "O";
-        playerTurn = true;
-        let b = column.getAttribute("data-value");
-        secondPlayerMoves.push(b);
-        console.log(secondPlayerMoves);
+      if (isItEmpty(this.textContent)) {
+        if (firstPlayerTurn == true) {
+          this.textContent = "X";
+          playerNumber.textContent = 1;
+          playerMove.textContent = "крестик";
+          firstPlayerTurn = false;
+          let a = column.getAttribute("data-value");
+          firstPlayerMoves.push(a);
+          console.log(firstPlayerMoves);
+        } else {
+          this.textContent = "O";
+          playerNumber.textContent = 2;
+          playerMove.textContent = "нолик";
+          firstPlayerTurn = true;
+          let b = column.getAttribute("data-value");
+          secondPlayerMoves.push(b);
+          console.log(secondPlayerMoves);
+        }
       }
     });
   }

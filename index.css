@@ -51,4 +51,9 @@
   width: 200px;
   height: 70px;
   border-radius: 20px;
+  cursor: pointer;
+}
+
+.table__button:hover {
+  background-color: floralwhite;
 }
