@@ -54,4 +54,20 @@ let winCombs = [
   [2, 4, 6],
 ];
 
-function isVictory() {}
+function isItVictory(winArr, userArr) {
+  let winResult = "";
+  for (let i = 0; i < winArr.length; i++) {
+    for (let k = 0; k < winArr[i].length; k++) {
+      if (userArr.includes(winArr[i][k])) {
+        winResult += winArr[i][k];
+      }
+    }
+    console.log(winResult);
+    if (winResult.length < 3) {
+      winResult = "";
+    } else return true;
+  }
+  return false;
+}
+
+console.log(isItVictory(winCombs, arr3));
