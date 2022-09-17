@@ -1,6 +1,8 @@
 const columnsAll = document.querySelectorAll(".table__column");
 const playerNumber = document.querySelector("#_playerNumber");
 const playerMove = document.querySelector("#_playerMove");
+const winnerText = document.querySelector("#_winnerText");
+const winnerPlayerNumber = document.querySelector("#_winnerPlayerNumber");
 
 // boolen переменная для определения хода
 let firstPlayerTurn = true;
@@ -8,40 +10,6 @@ let firstPlayerTurn = true;
 // массивы с ходами игроков
 let firstPlayerMoves = [];
 let secondPlayerMoves = [];
-
-function isItEmpty(value) {
-  if (value == "") {
-    return true;
-  } else return false;
-}
-
-function crossOrToe() {
-  for (let column of columnsAll) {
-    column.addEventListener("click", function () {
-      if (isItEmpty(this.textContent)) {
-        if (firstPlayerTurn == true) {
-          this.textContent = "X";
-          playerNumber.textContent = 1;
-          playerMove.textContent = "крестик";
-          firstPlayerTurn = false;
-          let a = column.getAttribute("data-value");
-          firstPlayerMoves.push(a);
-          console.log(firstPlayerMoves);
-        } else {
-          this.textContent = "O";
-          playerNumber.textContent = 2;
-          playerMove.textContent = "нолик";
-          firstPlayerTurn = true;
-          let b = column.getAttribute("data-value");
-          secondPlayerMoves.push(b);
-          console.log(secondPlayerMoves);
-        }
-      }
-    });
-  }
-}
-
-crossOrToe();
 
 let winCombs = [
   [0, 1, 2],
@@ -54,20 +22,70 @@ let winCombs = [
   [2, 4, 6],
 ];
 
-function isItVictory(winArr, userArr) {
-  let winResult = "";
-  for (let i = 0; i < winArr.length; i++) {
-    for (let k = 0; k < winArr[i].length; k++) {
-      if (userArr.includes(winArr[i][k])) {
-        winResult += winArr[i][k];
+function isItEmpty(value) {
+  if (value == "") {
+    return true;
+  } else return false;
+}
+
+function crossOrToe() {
+  for (let column of columnsAll) {
+    column.addEventListener("click", play);
+  }
+}
+
+crossOrToe();
+
+function play() {
+  if (isItEmpty(this.textContent)) {
+    if (firstPlayerTurn == true) {
+      this.textContent = "X";
+      playerNumber.textContent = 1;
+      playerMove.textContent = "нолик";
+      firstPlayerTurn = false;
+      let moveValue = this.getAttribute("data-value");
+      firstPlayerMoves.push(moveValue);
+
+      if (isItVictory(winCombs, firstPlayerMoves)) {
+        console.log("WIN 1");
+        showGameResult();
+      }
+    } else {
+      this.textContent = "O";
+      playerNumber.textContent = 2;
+      playerMove.textContent = "крестик";
+      firstPlayerTurn = true;
+      let moveValue = this.getAttribute("data-value");
+      secondPlayerMoves.push(moveValue);
+
+      if (isItVictory(winCombs, secondPlayerMoves)) {
+        console.log("WIN 2");
+        showGameResult();
       }
     }
-    console.log(winResult);
-    if (winResult.length < 3) {
-      winResult = "";
-    } else return true;
+  }
+}
+
+function isItVictory(winArr, userArr) {
+  let resultWin = [];
+  for (let i = 0; i < winArr.length; i++) {
+    for (let k = 0; k < winArr[i].length; k++) {
+      let isInclude = userArr.includes(String(winArr[i][k]));
+      if (isInclude) {
+        resultWin.push(1);
+      }
+    }
+
+    if (resultWin.length < 3) {
+      resultWin = [];
+    } else {
+      return true;
+    }
   }
   return false;
 }
 
-console.log(isItVictory(winCombs, arr3));
+function showGameResult() {
+  winnerText.classList.remove("table__text_inactive");
+  winnerPlayerNumber.textContent = playerNumber.textContent;
+}

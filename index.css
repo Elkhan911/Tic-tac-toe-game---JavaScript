@@ -30,6 +30,10 @@
   font-size: 25px;
 }
 
+.table__text_inactive {
+  display: none;
+}
+
 .table__row {
   border: 1px solid red;
 }
