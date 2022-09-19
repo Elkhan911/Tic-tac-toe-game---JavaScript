@@ -1,9 +1,12 @@
 const columnsAll = document.querySelectorAll(".table__column");
-const playerNumber = document.querySelector("#_playerNumber");
-const playerMove = document.querySelector("#_playerMove");
 const winnerText = document.querySelector("#_winnerText");
 const winnerPlayerNumber = document.querySelector("#_winnerPlayerNumber");
 const newGameBtn = document.querySelector("#_newGameBtn");
+
+// переменная для определения очереди хода
+const playerNumber = document.querySelector("#_playerNumber");
+// переменная для определния Х или О
+const playerMove = document.querySelector("#_playerMove");
 
 // boolen переменная для определения хода
 let firstPlayerTurn = true;
@@ -23,73 +26,68 @@ let winCombs = [
   [2, 4, 6],
 ];
 
-function isItEmpty(value) {
-  if (value == "") {
-    return true;
-  } else return false;
-}
-
-function crossOrToe() {
+function StartGame() {
   for (let column of columnsAll) {
     column.addEventListener("click", play);
   }
 }
 
-crossOrToe();
+StartGame();
+
+function isItEmpty(elem) {
+  return elem.textContent == "";
+}
 
 function play() {
-  if (isItEmpty(this.textContent)) {
-    if (firstPlayerTurn == true) {
+  if (isItEmpty(this)) {
+    if (firstPlayerTurn) {
       this.textContent = "X";
-      playerNumber.textContent = 1;
-      playerMove.textContent = "нолик";
       firstPlayerTurn = false;
-      let moveValue = this.getAttribute("data-value");
-      firstPlayerMoves.push(moveValue);
-
+      let dataValue = this.getAttribute("data-value");
+      firstPlayerMoves.push(dataValue);
+      playerNumber.textContent = 2;
+      playerMove.textContent = "нолик";
       isItDraw();
       if (isItVictory(winCombs, firstPlayerMoves)) {
-        console.log("WIN 1");
-        showGameResult();
+        showResult();
       }
     } else {
       this.textContent = "O";
-      playerNumber.textContent = 2;
-      playerMove.textContent = "крестик";
       firstPlayerTurn = true;
-      let moveValue = this.getAttribute("data-value");
-      secondPlayerMoves.push(moveValue);
-
+      let dataValue = this.getAttribute("data-value");
+      secondPlayerMoves.push(dataValue);
+      playerNumber.textContent = 1;
+      playerMove.textContent = "крестик";
       isItDraw();
       if (isItVictory(winCombs, secondPlayerMoves)) {
-        console.log("WIN 2");
-        showGameResult();
+        showResult();
       }
     }
   }
 }
 
-function isItVictory(winArr, userArr) {
-  let resultWin = [];
-  for (let i = 0; i < winArr.length; i++) {
-    for (let k = 0; k < winArr[i].length; k++) {
-      let isInclude = userArr.includes(String(winArr[i][k]));
-      if (isInclude) {
-        resultWin.push(1);
+function isItVictory(arrWin, arrUser) {
+  let winArr = [];
+  for (let i = 0; i < arrWin.length; i++) {
+    for (let j = 0; j < arrWin[i].length; j++) {
+      let isIncludes = arrUser.includes(String(arrWin[i][j]));
+      if (isIncludes) {
+        winArr.push(arrWin[i][j]);
       }
     }
 
-    if (resultWin.length < 3) {
-      resultWin = [];
+    if (winArr.length < 3) {
+      winArr = [];
     } else {
+      console.log(winArr);
+      console.log(arrUser);
       return true;
     }
   }
-
   return false;
 }
 
-function showGameResult() {
+function showResult() {
   winnerText.classList.remove("table__text_inactive");
   winnerPlayerNumber.textContent = playerNumber.textContent + ". Поздравляем!";
   for (let column of columnsAll) {
@@ -97,33 +95,34 @@ function showGameResult() {
   }
 }
 
-newGameBtn.addEventListener("click", function () {
-  for (let column of columnsAll) {
-    column.textContent = "";
-    column.addEventListener("click", play);
-  }
+function isItDraw() {
+  let draw = [...columnsAll].every(function (elem) {
+    return elem.textContent !== "";
+  });
 
+  if (
+    draw &&
+    !isItVictory(winCombs, firstPlayerMoves) &&
+    !isItVictory(winCombs, secondPlayerMoves)
+  ) {
+    console.log(draw);
+    winnerText.classList.remove("table__text_inactive");
+    winnerPlayerNumber.textContent = "Боевая ничья. Сыграйте еще раз!";
+  }
+}
+
+newGameBtn.addEventListener("click", function () {
+  firstPlayerTurn = true;
   firstPlayerMoves = [];
   secondPlayerMoves = [];
 
+  playerNumber.textContent = 1;
   playerMove.textContent = "крестик";
+
   winnerText.classList.add("table__text_inactive");
   winnerPlayerNumber.textContent = "";
-});
-
-function checkEmpty() {
-  return [...columnsAll].every(function (el) {
-    return el.textContent !== "";
-  });
-}
-
-function isItDraw() {
-  if (
-    checkEmpty() &&
-    !isItVictory(winCombs, secondPlayerMoves) &&
-    !isItVictory(winCombs, firstPlayerMoves)
-  ) {
-    winnerText.classList.remove("table__text_inactive");
-    winnerPlayerNumber.textContent = "Боевая ничья. Сыграйте еще!";
+  for (let column of columnsAll) {
+    column.addEventListener("click", play);
+    column.textContent = "";
   }
-}
+});
