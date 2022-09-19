@@ -88,4 +88,7 @@ function isItVictory(winArr, userArr) {
 function showGameResult() {
   winnerText.classList.remove("table__text_inactive");
   winnerPlayerNumber.textContent = playerNumber.textContent;
+  for (let column of columnsAll) {
+    column.removeEventListener("click", play);
+  }
 }
