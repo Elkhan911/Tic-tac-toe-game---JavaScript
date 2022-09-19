@@ -3,6 +3,7 @@ const playerNumber = document.querySelector("#_playerNumber");
 const playerMove = document.querySelector("#_playerMove");
 const winnerText = document.querySelector("#_winnerText");
 const winnerPlayerNumber = document.querySelector("#_winnerPlayerNumber");
+const newGameBtn = document.querySelector("#_newGameBtn");
 
 // boolen переменная для определения хода
 let firstPlayerTurn = true;
@@ -46,6 +47,7 @@ function play() {
       let moveValue = this.getAttribute("data-value");
       firstPlayerMoves.push(moveValue);
 
+      isItDraw();
       if (isItVictory(winCombs, firstPlayerMoves)) {
         console.log("WIN 1");
         showGameResult();
@@ -58,6 +60,7 @@ function play() {
       let moveValue = this.getAttribute("data-value");
       secondPlayerMoves.push(moveValue);
 
+      isItDraw();
       if (isItVictory(winCombs, secondPlayerMoves)) {
         console.log("WIN 2");
         showGameResult();
@@ -82,13 +85,45 @@ function isItVictory(winArr, userArr) {
       return true;
     }
   }
+
   return false;
 }
 
 function showGameResult() {
   winnerText.classList.remove("table__text_inactive");
-  winnerPlayerNumber.textContent = playerNumber.textContent;
+  winnerPlayerNumber.textContent = playerNumber.textContent + ". Поздравляем!";
   for (let column of columnsAll) {
     column.removeEventListener("click", play);
+  }
+}
+
+newGameBtn.addEventListener("click", function () {
+  for (let column of columnsAll) {
+    column.textContent = "";
+    column.addEventListener("click", play);
+  }
+
+  firstPlayerMoves = [];
+  secondPlayerMoves = [];
+
+  playerMove.textContent = "крестик";
+  winnerText.classList.add("table__text_inactive");
+  winnerPlayerNumber.textContent = "";
+});
+
+function checkEmpty() {
+  return [...columnsAll].every(function (el) {
+    return el.textContent !== "";
+  });
+}
+
+function isItDraw() {
+  if (
+    checkEmpty() &&
+    !isItVictory(winCombs, secondPlayerMoves) &&
+    !isItVictory(winCombs, firstPlayerMoves)
+  ) {
+    winnerText.classList.remove("table__text_inactive");
+    winnerPlayerNumber.textContent = "Боевая ничья. Сыграйте еще!";
   }
 }

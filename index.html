@@ -12,14 +12,15 @@
       <h1 class="content__header">Игра крестики - нолики на JavaScript</h1>
 
       <table class="table">
-        <p class="table__text">
-          Ход игрока: <span id="_playerNumber"> 1</span>. Нужно поставить:
-          <b> <span id="_playerMove"> крестик</span></b>
-        </p>
-        <p id="_winnerText" class="table__text table__text_inactive">
-          Победил игрок: <span id="_winnerPlayerNumber"></span> . Поздравляем!
-        </p>
-
+        <div class="table__box">
+          <p class="table__text">
+            Ход игрока: <span id="_playerNumber"> 1</span>. Нужно поставить:
+            <b> <span id="_playerMove"> крестик</span></b>
+          </p>
+          <p id="_winnerText" class="table__text table__text_inactive">
+            Победил игрок: <span id="_winnerPlayerNumber"></span>
+          </p>
+        </div>
         <tr class="table__row">
           <td class="table__column" data-value="0"></td>
           <td class="table__column" data-value="1"></td>
@@ -38,7 +39,7 @@
       </table>
 
       <div class="table__buttons-zone">
-        <button class="table__button">Начать заново</button>
+        <button class="table__button" id="_newGameBtn">Начать заново</button>
       </div>
     </section>
     <script src="script.js"></script>
